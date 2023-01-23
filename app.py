@@ -6,23 +6,42 @@ app.secret_key = "abc"
 
 @app.route('/', methods=['GET', 'POST'])
 def index():
-    tdb = float(request.form['tdb'])
-    tr = float(request.form['tr'])
-    vr = float(request.form['vr'])
-    v=vr
-    rh = float(request.form['rh'])
-    met = float(request.form['met'])
-    clo = float(request.form['clo'])
-    wme = 0
-    a_coefficient = float(request.form['a_coefficient'])
+    try: 
+        tdb = float(request.form['tdb'])
+        tr = float(request.form['tr'])
+        vr = float(request.form['vr'])
+        v=vr
+        rh = float(request.form['rh'])
+        met = float(request.form['met'])
+        clo = float(request.form['clo'])
+        wme = 0
+        a_coefficient = float(request.form['a_coefficient'])
 
-    c20= float(request.form['c20'])
-    ct = float(request.form['ct'])
-    cs = float(request.form['cs'])
-    cr = float(request.form['cr'])
-    pt = float(request.form['pt'])
-    ps = float(request.form['ps'])
-    pd = float(request.form['pd'])
+        c20= float(request.form['c20'])
+        ct = float(request.form['ct'])
+        cs = float(request.form['cs'])
+        cr = float(request.form['cr'])
+        pt = float(request.form['pt'])
+        ps = float(request.form['ps'])
+        pd = float(request.form['pd'])
+    except:
+        tdb = 16
+        tr = 16
+        vr = 0.1
+        v=vr
+        rh = 50
+        met = 1
+        clo = 1
+        wme = 0
+        a_coefficient = 0
+
+        c20= 10000
+        ct = 0
+        cs = 0
+        cr = 0
+        pt = 0
+        ps = 0
+        pd = 0
     if cs>0 and ct>0 and cr>0:
         f_c=(cs*(cr/100))/1.83
         proxycond=cs*0.3*((ct-tdb)/(60-tdb))

@@ -1,53 +1,7 @@
 {% extends 'base.html' %}
 
 {% block head %}
-<script>
 
-function loadvalues(){
-    tdb.value= {{ tdb }};
-    tdb_value.value= {{ tdb }};
-        
-    tr.value= {{ tr }};
-    tr_value.value= {{ tr }};
-
-    vr.value= {{ vr }};
-    vr_value.value= {{ vr }};
-
-    rh.value= {{ rh }};
-    rh_value.value= {{ rh }};
-
-    met.value= {{ met }};
-    met_value.value= {{ met }}; 
-
-    clo.value= {{ clo }};
-    clo_value.value= {{ clo }};
-        
-    a_coefficient.value= {{ a_coefficient }};
-    a_coefficient_value.value= {{ a_coefficient }};       
-
-    ct.value= {{ ct }};
-    ct_value.value= {{ ct }}; 
-
-    cs.value= {{ cs }};
-    cs_value.value= {{ cs }}; 
-
-    cr.value= {{ cr }};
-    cr_value.value= {{ cr }}; 
-
-    pt.value= {{ pt }};
-    pt_value.value= {{ pt }}; 
-
-    ps.value= {{ ps }};
-    ps_value.value= {{ ps }}; 
-
-    pd.value= {{ pd }};
-    pd_value.value= {{ pd }};
- 
-    c20.value= {{ c20 }};
-    c20_value.value= {{ c20 }};
-}
-
-</script>
 {% endblock %}
 
 {% block body %}
@@ -151,7 +105,53 @@ function loadvalues(){
 
 </form>
 
+<script>
 
+    function loadvalues(){
+        tdb.value= {{ tdb }};
+        tdb_value.value= {{ tdb }};
+            
+        tr.value= {{ tr }};
+        tr_value.value= {{ tr }};
+    
+        vr.value= {{ vr }};
+        vr_value.value= {{ vr }};
+    
+        rh.value= {{ rh }};
+        rh_value.value= {{ rh }};
+    
+        met.value= {{ met }};
+        met_value.value= {{ met }}; 
+    
+        clo.value= {{ clo }};
+        clo_value.value= {{ clo }};
+            
+        a_coefficient.value= {{ a_coefficient }};
+        a_coefficient_value.value= {{ a_coefficient }};       
+    
+        ct.value= {{ ct }};
+        ct_value.value= {{ ct }}; 
+    
+        cs.value= {{ cs }};
+        cs_value.value= {{ cs }}; 
+    
+        cr.value= {{ cr }};
+        cr_value.value= {{ cr }}; 
+    
+        pt.value= {{ pt }};
+        pt_value.value= {{ pt }}; 
+    
+        ps.value= {{ ps }};
+        ps_value.value= {{ ps }}; 
+    
+        pd.value= {{ pd }};
+        pd_value.value= {{ pd }};
+     
+        c20.value= {{ c20 }};
+        c20_value.value= {{ c20 }};
+    }
+    
+    </script>
 
 
 {% endblock %}
