@@ -2,23 +2,43 @@
 
 {% block head %}
 <script>
-    function formProcess() {
-        var capture= document.getElementById("tdb").value + '<br>';
-        capture += document.getElementById("tr").value + '<br>';
-        capture += document.getElementById("vr").value + '<br>';
-        capture += document.getElementById("hr").value + '<br>';
-        capture += document.getElementById("met").value + '<br>';
-        capture += document.getElementById("clo").value + '<br>';
-        document.getElementById("outputDiv").innerHTML = capture;
-        
-        tdb.value = localStorage.getItem("tdb")
-        tr.value = localStorage.getItem("tr");
-        vr.value = localStorage.getItem("vr");
-        hr.value = localStorage.getItem("rh");
-        met.value = localStorage.getItem("met");
-        clo.value = localStorage.getItem("clo");
+   function saveValue() {
+        var curseur_tdb_Value = document.getElementById("tdb").value;
+        var curseur_tr_Value = document.getElementById("tr").value;
+        var curseur_vr_Value = document.getElementById("vr").value;
+        var curseur_rh_Value = document.getElementById("rh").value;
+        var curseur_met_Value = document.getElementById("met").value;
+        var curseur_clo_Value = document.getElementById("clo").value;
 
-        }
+        localStorage.setItem("curseur_tdb_Value", curseur_tdb_Value);
+        localStorage.setItem("curseur_tr_Value", curseur_tr_Value);
+        localStorage.setItem("curseur_vr_Value", curseur_vr_Value);
+        localStorage.setItem("curseur_rh_Value", curseur_rh_Value);
+        localStorage.setItem("curseur_met_Value", curseur_met_Value);
+        localStorage.setItem("curseur_clo_Value", curseur_clo_Value);
+ 
+    }
+    function loadvalues(){
+        tdb.value= {{ tdb }};
+        tdb_value.value= {{ tdb }} 
+        
+        tr.value= {{ tr }};
+        tr_value.value= {{ tr }} 
+
+        vr.value= {{ vr }};
+        vr_value.value= {{ vr }} 
+
+        rh.value= {{ rh }};
+        rh_value.value= {{ rh }} 
+
+        met.value= {{ met }};
+        met_value.value= {{ met }} 
+
+        clo.value= {{ clo }};
+        clo_value.value= {{ clo }} 
+
+       
+    }
 </script>
 {% endblock %}
 
@@ -26,51 +46,48 @@
 <h1>SlowHeat Toolkit v0</h1>
 <h2>Room Conditions</h2>
 
-<div id="outputDiv" style="width: 200px ; height: 200px; border: 1px solid;">
-<p> {{capture}}</p>
 
-</div>
-
-<form id="form" action="/" method="post" onsubmit="return true">
+<form id="form" action="/" method="post">
     
     <div>
         <label for="tdb">Ta:</label>
-        <input type="range" id="tdb" name="tdb" min="10" max="20" value="16" oninput="tdb_value.value=tdb.value ; localStorage.setItem('tdb', tdb.value);">
-        <output id="tdb_value">16</output>
-        <button type="button" onclick="sendValue()">Envoyer</button>
+        <input type="range" id="tdb" name="tdb" min="10" max="20" value="16" oninput="tdb_value.value=tdb.value;">
+        <output id="tdb_value">16</output>    
     </div>
     <div>
         <label for="tr">Tr:</label>
-        <input type="range" id="tr" name="tr" min="0" max="30" value="16" oninput="tr_value.value=tr.value; localStorage.setItem('tr', tr.value);">
+        <input type="range" id="tr" name="tr" min="0" max="30" value="16" oninput="tr_value.value=tr.value; ">
         <output id="tr_value">16</output>
     </div> 
     <div>    
         <label for="vr">Vr:</label>
-        <input type="range" id="vr" name="vr" min="0" max="2" value="0.2" step="0.1" oninput="vr_value.value=vr.value; localStorage.setItem('vr', vr.value);">
+        <input type="range" id="vr" name="vr" min="0" max="2" value="0.2" step="0.1" oninput="vr_value.value=vr.value; ">
         <output id="vr_value">0.2</output>
     </div>
     <div>     
         <label for="rh">Rh:</label>
-        <input type="range" id="rh" name="rh" min="0" max="100" value="50" step="5" oninput="rh_value.value=rh.value; localStorage.setItem('rh', rh.value);">
+        <input type="range" id="rh" name="rh" min="0" max="100" value="50" step="5" oninput="rh_value.value=rh.value;">
         <output id="rh_value">50</output>
     </div> 
-    
-
-    
-<h2>Physiologic Parameters</h2>   <div>
+    <div>  
         <label for="met">Me:</label>
-        <input type="range" id="met" name="met" min="1" max="4" value="1.1" step="0.1" oninput="met_value.value=met.value; localStorage.setItem('met', met.value);">
+        <input type="range" id="met" name="met" min="1" max="4" value="1.1" step="0.1" oninput="met_value.value=met.value;">
         <output id="met_value">1.1</output>
     </div> 
 
-    <h2>Clothes</h2>
-
     <div>        
          <label for="clo">Cl:</label>
-         <input type="range" id="clo" name="clo" min="0" max="2" value="1" step="0.1" oninput="clo_value.value=clo.value; localStorage.setItem('clo', clo.value);">
+         <input type="range" id="clo" name="clo" min="0" max="2" value="1" step="0.1" oninput="clo_value.value=clo.value; ">
          <output id="clo_value">1</output>
      </div>    
 
+        <input type="submit">
+        <input type="button" value="setback" onclick="loadvalues()">
+        
+        {% if pmv_value %}
+            <p> PMV value: {{ pmv_value }}</p>
+        {% endif %}
+     
 
 <h2>Activity</h2>
 <h2>Acclimatation</h2>
@@ -79,15 +96,24 @@
 <h2>Results</h2>
 
 
-    <input type="submit" id="submit" name="submit" value="Calculate PMV" onclick="formProcess()" />
 
-    {% if pmv_value %}
-    <p> PMV value: {{ pmv_value }}</p>
-    {% endif %}
+
+
     
   
 </form>
+<body>
+    
 
+
+    {% with messages = get_flashed_messages() %}  
+         {% if messages %}  
+               {% for message in messages %}  
+                    <p>{{ message }}</p>  
+               {% endfor %}  
+         {% endif %}  
+      {% endwith %}  
+</body>
 
 
 
