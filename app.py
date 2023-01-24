@@ -88,18 +88,27 @@ def index():
 
 
 
-    model = jos3.JOS3(height=1.7, weight=70, age=30)  # Builds a model
+    model = jos3.JOS3(height=1.8, weight=80, age=30)  # Builds a model
     # Set the first condition
-    model.To = (shtdb+shtr)/2  # Operative temperature [oC]
+    model.To = (tdb+tr)/2  # Operative temperature [oC]
     model.RH = rh  # Relative humidity [%]
     model.Va = vr  # Air velocity [m/s]
     model.PAR = met  # Physical activity ratio [-]
+    model._clo=clo
     model.simulate(120)  # Exposure time = 60 [min]
+
+
 
 
     # Show the results
     df = pandas.DataFrame(model.dict_results())  # Make pandas.DataFrame
-    
+    df.plot()
+    plt.legend(ncol=8) # add a legend
+    plt.savefig("static\images\plot.png")
+    plt.clf() # Clear the current figure for the next iteration
+    # Récupérer les poignées et les étiquettes de la légende
+
+
     df.TskMean.plot(color = '#1F77B4') # red color in hexadecimal
     plt.title("Mean Skin Temperature") # add a title
     plt.xlabel("Time (minutes)")
@@ -124,12 +133,21 @@ def index():
     plt.savefig("static\images\plotHead.png")
     plt.clf() # Clear the current figure for the next iteration    
 
-    df.TskRHand.plot(color = '#D62728', label = "TskRHand") # red color in hexadecimal
-    plt.legend(["TskRHand"]) # add a legend
-    df.TcrRHand.plot(color = '#2CA02C', label = "TcrRHand")
-    plt.title("Skin temperature Hands") # add a title
+    df.THLskRHand.plot(color = '#2CA02C') # red color in hexadecimal
+    plt.title("température latente hand") # add a title
     plt.xlabel("Time (minutes)")
-    plt.ylabel("Skin Temperature (°C)")
+    plt.ylabel("THLskRHand Temperature (W)")
+    plt.legend(["THLskRHand"]) # add a legend
+    plt.savefig("static\images\plotTHLskRHand.png")
+    plt.clf() # Clear the current figure for the next iteration   
+
+    df.TskRHand.plot(color = '#16A085', label = "TskRHand") # red color in hexadecimal
+    df.TcrRHand.plot(color = '#0E6655', label = "TcrRHand")
+    df.TskLHand.plot(color = '#E67E22', label = "TskLHand") # red color in hexadecimal
+    df.TcrLHand.plot(color = '#935116', label = "TcrLHand")
+    plt.title("Temperature Hands") # add a title
+    plt.xlabel("Time (minutes)")
+    plt.ylabel(" Temperature (°C)")
     plt.legend() # add a legend
     plt.savefig("static\images\plotRHand.png")
     plt.clf() # Clear the current figure for the next iteration
