@@ -239,9 +239,18 @@ function loadvalues(){
         top: 505px;
         left: 505px;
       }
+    
+      #score {
+        width:20px;
+        height:20px;
+        position: absolute;
+        top: 160px;
+        left: 455px;
+      }
       #body, #rightarm, #righthand, #leftarm, #lefthand, #leftleg, #leftfoot, #rightleg, #rightfoot {
     border-radius: 10px;
     }
+        
     </style>
 <body>
     <div id="head"></div>
@@ -254,8 +263,15 @@ function loadvalues(){
     <div id="righthand"></div>
     <div id="leftfoot"></div>
     <div id="rightfoot"></div>
-    
+    <div id="score">
+    <h1> {{ 100-sh_pmv.ppd }}%</h1>
+    <h2>   Happy</h2>
+    </div>    
+
 </body>
+<script>
+
+</script>
 </html>
 
 

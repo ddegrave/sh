@@ -82,18 +82,23 @@ def index():
     pmvpmv=pmv(shtdb, shtr, vr, rh, met, clo,wme)
     color=get_color(pmvpmv)
     sh_pmv=pmv_ppd(shtdb, shtr, vr, rh, met, clo,wme)
+    
     set_value=set_tmp(tdb, tr, v, rh, met, clo, wme=0, body_surface_area=1.83, p_atm=101325, body_position='standing', units='SI', limit_inputs=True)
-    return render_template('index.html',color=color,kWhgain=kWhgain,hdayproxy=hdayproxy, centralheating=centralheating, proximityconso=proximityconso, sh_pmv=sh_pmv, set_value=set_value, pmv_value=pmv_value, tdb=tdb, tr=tr, vr=vr, rh=rh, met=met,clo=clo, a_coefficient=a_coefficient, ct=ct, cs=cs, cr=cr, pt=pt, ps=ps, pd=pd, c20=c20 )
+    return render_template('index.html', color=color,kWhgain=kWhgain,hdayproxy=hdayproxy, centralheating=centralheating, proximityconso=proximityconso, sh_pmv=sh_pmv, set_value=set_value, pmv_value=pmv_value, tdb=tdb, tr=tr, vr=vr, rh=rh, met=met,clo=clo, a_coefficient=a_coefficient, ct=ct, cs=cs, cr=cr, pt=pt, ps=ps, pd=pd, c20=c20 )
 
 def get_color(value):
     if value <= -1:
         return "blue"
+    elif value >-1 and value <=-0.5:
+        return "green"   
+    elif value >-0.5 and value <0.5:
+        return "#DFFF00"   
+    elif value >=0.5 and value <1:
+        return "green"
     elif value >=1:
-        return "orange"
-    elif value == "nan":
         return "red"
     else:
-        return "green"
+        return "black"
 
 
 
