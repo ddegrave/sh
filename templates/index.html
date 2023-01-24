@@ -1,7 +1,53 @@
 {% extends 'base.html' %}
 
 {% block head %}
+<script>
 
+function loadvalues(){
+    tdb.value= {{ tdb }};
+    tdb_value.value= {{ tdb }};
+        
+    tr.value= {{ tr }};
+    tr_value.value= {{ tr }};
+
+    vr.value= {{ vr }};
+    vr_value.value= {{ vr }};
+
+    rh.value= {{ rh }};
+    rh_value.value= {{ rh }};
+
+    met.value= {{ met }};
+    met_value.value= {{ met }}; 
+
+    clo.value= {{ clo }};
+    clo_value.value= {{ clo }};
+        
+    a_coefficient.value= {{ a_coefficient }};
+    a_coefficient_value.value= {{ a_coefficient }};       
+
+    ct.value= {{ ct }};
+    ct_value.value= {{ ct }}; 
+
+    cs.value= {{ cs }};
+    cs_value.value= {{ cs }}; 
+
+    cr.value= {{ cr }};
+    cr_value.value= {{ cr }}; 
+
+    pt.value= {{ pt }};
+    pt_value.value= {{ pt }}; 
+
+    ps.value= {{ ps }};
+    ps_value.value= {{ ps }}; 
+
+    pd.value= {{ pd }};
+    pd_value.value= {{ pd }};
+ 
+    c20.value= {{ c20 }};
+    c20_value.value= {{ c20 }};
+}
+
+</script>
 {% endblock %}
 
 {% block body %}
@@ -14,7 +60,7 @@
     <div>
         <label for="tdb">tdb:</label>
         <input type="range" id="tdb" name="tdb" min="10" max="20" value="16" oninput="tdb_value.value=tdb.value;">
-        <output id="tdb_value">16</output>    
+        <output id="tdb_value">16</output>
     </div>
     <div>
         <label for="tr">Tr:</label>
@@ -31,26 +77,23 @@
         <input type="range" id="rh" name="rh" min="0" max="100" value="50" step="5" oninput="rh_value.value=rh.value;">
         <output id="rh_value">50</output>
     </div> 
-<h2>Morphology</h2>
-<h2>Activity</h2>
+<h2>A: Activity, Acclimatation & Clothes</h2>
 <div>  
     <label for="met">Me:</label>
     <input type="range" id="met" name="met" min="1" max="4" value="1.1" step="0.1" oninput="met_value.value=met.value;">
     <output id="met_value">1.1</output>
 </div> 
-<h2>Clothes</h2>
 <div>        
     <label for="clo">Cl:</label>
     <input type="range" id="clo" name="clo" min="0" max="2" value="1" step="0.1" oninput="clo_value.value=clo.value; ">
     <output id="clo_value">1</output>
 </div> 
-<h2>Acclimatation</h2>
 <div>        
     <label for="a_coefficient">Ad:</label>
     <input type="range" id="a_coefficient" name="a_coefficient" min="0" max="1" value="0" step="0.1" oninput="a_coefficient_value.value=a_coefficient.value; ">
     <output id="a_coefficient_value">0</output>
 </div>  
-<h2>Conductive Devices</h2>
+<h2>B: Conductive Devices</h2>
 <div>
     <label for="ct">ct:</label>
     <input type="range" id="ct" name="ct" min="0" max="70" value="0" oninput="ct_value.value=ct.value; ">
@@ -64,26 +107,29 @@
 <div>
     <label for="cr">cr:</label>
     <input type="range" id="cr" name="cr" min="0" max="100" value="100" step="5" oninput="cr_value.value=cr.value; ">
-    <output id="cr_value">0</output>
+    <output id="cr_value">100</output>
 </div> 
-<h2>Radiative Device</h2>
+<h2>C: Radiative Device</h2>
 <div>
     <label for="pt">pt:</label>
     <input type="range" id="pt" name="pt" min="0" max="120" value="0" oninput="pt_value.value=pt.value; ">
     <output id="pt_value">0</output>
+
 </div> 
 <div>
     <label for="ps">ps:</label>
     <input type="range" id="ps" name="ps" min="0" max="2" value="0" step="0.1" oninput="ps_value.value=ps.value; ">
     <output id="ps_value">0</output>
+
 </div> 
 <div>
     <label for="pd">pd:</label>
     <input type="range" id="pd" name="pd" min="0" max="3" value="0" step="0.1"  oninput="pd_value.value=pd.value; ">
     <output id="pd_value">0</output>
+
 </div> 
 
-<h2>consumption</h2>
+<h2>Consumption</h2>
 <div>
     <label for="c20">C20:</label>
     <input type="range" id="c20" name="c20" min="0" max="50000" value="13000" step="500" oninput="c20_value.value=c20.value; ">
@@ -91,12 +137,13 @@
 </div> 
 
 <h2>Results</h2>
-    <input type="submit">
-    <input type="button" value="setback" onclick="loadvalues()">
+    <input type="submit" value="1:Calculate">
+    <input type="button" value="2:Reload inputs" onclick="loadvalues()">
+    <p> ...en calculant, les valeurs s'effacent, appuyer sur 2: Reload value les fait revenir</p>
 
     <p> PMV & PPD value: {{ pmv_value }}</p>
-    <p> SET value: {{ set_value }}</p>
-    <p> SHpmv value: {{ sh_pmv }}</p>
+    <p> ==> SHpmv value: {{ sh_pmv }}</p>
+
     <p> CentralHeating economy: {{ centralheating }} %</p>
     <p> CentralHeating economy: {{ kWhgain }} kWh</p>
     <p> Proximity device power: {{ proximityconso }} Watts</p>
@@ -105,53 +152,111 @@
 
 </form>
 
-<script>
+<html>
 
-    function loadvalues(){
-        tdb.value= {{ tdb }};
-        tdb_value.value= {{ tdb }};
-            
-        tr.value= {{ tr }};
-        tr_value.value= {{ tr }};
-    
-        vr.value= {{ vr }};
-        vr_value.value= {{ vr }};
-    
-        rh.value= {{ rh }};
-        rh_value.value= {{ rh }};
-    
-        met.value= {{ met }};
-        met_value.value= {{ met }}; 
-    
-        clo.value= {{ clo }};
-        clo_value.value= {{ clo }};
-            
-        a_coefficient.value= {{ a_coefficient }};
-        a_coefficient_value.value= {{ a_coefficient }};       
-    
-        ct.value= {{ ct }};
-        ct_value.value= {{ ct }}; 
-    
-        cs.value= {{ cs }};
-        cs_value.value= {{ cs }}; 
-    
-        cr.value= {{ cr }};
-        cr_value.value= {{ cr }}; 
-    
-        pt.value= {{ pt }};
-        pt_value.value= {{ pt }}; 
-    
-        ps.value= {{ ps }};
-        ps_value.value= {{ ps }}; 
-    
-        pd.value= {{ pd }};
-        pd_value.value= {{ pd }};
-     
-        c20.value= {{ c20 }};
-        c20_value.value= {{ c20 }};
+    <style>
+      /* Styles pour les différentes parties du corps */
+      #head {
+        width: 70px;
+        height: 80px;
+        border-radius: 50%;
+        background-color: {{color}}; /* couleur rouge */
+        position: absolute;
+        top: 35px;
+        left: 465px;
+        
+      }
+      #body {
+        width: 100px;
+        height: 200px;
+        background-color: {{color}}; /* couleur verte */
+        position: absolute;
+        top: 120px;
+        left: 450px;
+        
+      }
+      #rightarm {
+        width: 25px;
+        height: 150px;
+        background-color: {{color}}; /* couleur bleue */
+        position: absolute;
+        top: 120px;
+        left: 555px;
+      }
+      #righthand {
+        width: 30px;
+        height: 30px;
+        background-color: {{color}}; /* couleur bleue */
+        position: absolute;
+        top: 275px;
+        left: 555px;
+      }
+      #leftarm {
+        width: 25px;
+        height: 150px;
+        background-color: {{color}}; /* couleur bleue */
+        position: absolute;
+        top: 120px;
+        left: 420px;
+      }
+      #lefthand {
+        width: 30px;
+        height: 30px;
+        background-color: {{color}}; /* couleur bleue */
+        position: absolute;
+        top: 275px;
+        left: 415px;
+      }
+      #leftleg {
+        width: 45px;
+        height: 180px;
+        background-color: {{color}}; /* couleur jaune */
+        position: absolute;
+        top: 320px;
+        left: 450px;
+      }
+      #leftfoot {
+        width: 50px;
+        height: 20px;
+        background-color: {{color}}; /* couleur jaune */
+        position: absolute;
+        top: 505px;
+        left: 445px;
+      }
+      #rightleg {
+        width: 45px;
+        height: 180px;
+        background-color: {{color}}; /* couleur jaune */
+        position: absolute;
+        top: 320px;
+        left: 505px;
+      }
+      #rightfoot {
+        width: 50px;
+        height: 20px;
+        background-color: {{color}}; /* couleur jaune */
+        position: absolute;
+        top: 505px;
+        left: 505px;
+      }
+      #body, #rightarm, #righthand, #leftarm, #lefthand, #leftleg, #leftfoot, #rightleg, #rightfoot {
+    border-radius: 10px;
     }
+    </style>
+<body>
+    <div id="head"></div>
+    <div id="body"></div>
+    <div id="leftarm"></div>
+    <div id="rightarm"></div>
+    <div id="leftleg"></div>
+    <div id="rightleg"></div>
+    <div id="lefthand"></div>
+    <div id="righthand"></div>
+    <div id="leftfoot"></div>
+    <div id="rightfoot"></div>
     
-    </script>
+</body>
+</html>
 
 
 {% endblock %}

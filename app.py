@@ -1,5 +1,14 @@
+"""imports"""
+
 from flask import Flask, render_template, request
-from pythermalcomfort.models import pmv_ppd, set_tmp
+from pythermalcomfort.models import pmv_ppd, set_tmp, pmv
+import random
+import sys
+from xml.etree import ElementTree as ET
+
+import yaml
+
+"""end imports"""
 
 app = Flask(__name__)
 app.secret_key = "abc"
@@ -50,7 +59,7 @@ def index():
         proxycond=0
     if pd>0 and pt>0 and ps>0:
         f_r=ps/((4*3.1415)*(pd**2))
-        proxyrad=ps*0.8*((pt-tdb)/(90-tdb))
+        proxyrad=ps*0.95*((pt-tdb)/(90-tdb))
     else:
         f_r=0
         proxyrad=0
@@ -70,10 +79,23 @@ def index():
         hdayproxy="no proximity use @ the moment"
 
     pmv_value=pmv_ppd(tdb, tr, vr, rh, met, clo,wme)
-    
+    pmvpmv=pmv(shtdb, shtr, vr, rh, met, clo,wme)
+    color=get_color(pmvpmv)
     sh_pmv=pmv_ppd(shtdb, shtr, vr, rh, met, clo,wme)
     set_value=set_tmp(tdb, tr, v, rh, met, clo, wme=0, body_surface_area=1.83, p_atm=101325, body_position='standing', units='SI', limit_inputs=True)
-    return render_template('index.html',kWhgain=kWhgain,hdayproxy=hdayproxy, centralheating=centralheating, proximityconso=proximityconso, sh_pmv=sh_pmv, set_value=set_value, pmv_value=pmv_value, tdb=tdb, tr=tr, vr=vr, rh=rh, met=met,clo=clo, a_coefficient=a_coefficient, ct=ct, cs=cs, cr=cr, pt=pt, ps=ps, pd=pd, c20=c20 )
+    return render_template('index.html',color=color,kWhgain=kWhgain,hdayproxy=hdayproxy, centralheating=centralheating, proximityconso=proximityconso, sh_pmv=sh_pmv, set_value=set_value, pmv_value=pmv_value, tdb=tdb, tr=tr, vr=vr, rh=rh, met=met,clo=clo, a_coefficient=a_coefficient, ct=ct, cs=cs, cr=cr, pt=pt, ps=ps, pd=pd, c20=c20 )
+
+def get_color(value):
+    if value <= -1:
+        return "blue"
+    elif value >=1:
+        return "orange"
+    elif value == "nan":
+        return "red"
+    else:
+        return "green"
+
+
 
 if __name__ == '__main__':
     app.run(debug=True)
