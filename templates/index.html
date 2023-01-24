@@ -1,6 +1,7 @@
 {% extends 'base.html' %}
 
 {% block head %}
+
 <script>
 
 function loadvalues(){
@@ -267,6 +268,12 @@ function loadvalues(){
     <h1> {{ 100-sh_pmv.ppd }}%</h1>
     <h2>   Happy</h2>
     </div>    
+
+<iframe id="currentPhoto" src="{{ url_for('static', filename='images/plotTskMean.png') }}" alt="tired of plotting stuff" height="480" width="640"></iframe>
+<iframe id="currentPhoto" src="{{ url_for('static', filename='images/plotMet.png') }}" alt="tired of plotting stuff" height="480" width="640"></iframe>
+<iframe id="currentPhoto" src="{{ url_for('static', filename='images/plotHead.png') }}" alt="tired of plotting stuff" height="480" width="640"></iframe>
+<iframe id="currentPhoto" src="{{ url_for('static', filename='images/plotRHand.png') }}" alt="tired of plotting stuff" height="480" width="640"></iframe>
+<iframe id="currentPhoto" src="{{ url_for('static', filename='images/plotRFoot.png') }}" alt="tired of plotting stuff" height="480" width="640"></iframe>
 
 </body>
 <script>

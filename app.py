@@ -1,17 +1,19 @@
 """imports"""
 
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, Response
 from pythermalcomfort.models import pmv_ppd, set_tmp, pmv
-import random
-import sys
-from xml.etree import ElementTree as ET
-
-import yaml
+import pandas
+import matplotlib.pyplot as plt
+import jos3
+import matplotlib
+matplotlib.use('Agg')
 
 """end imports"""
 
+UPLOAD_FOLDER = 'static/images'
 app = Flask(__name__)
 app.secret_key = "abc"
+app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
 @app.route('/', methods=['GET', 'POST'])
 def index():
@@ -82,6 +84,65 @@ def index():
     pmvpmv=pmv(shtdb, shtr, vr, rh, met, clo,wme)
     color=get_color(pmvpmv)
     sh_pmv=pmv_ppd(shtdb, shtr, vr, rh, met, clo,wme)
+
+
+
+
+    model = jos3.JOS3(height=1.7, weight=70, age=30)  # Builds a model
+    # Set the first condition
+    model.To = (shtdb+shtr)/2  # Operative temperature [oC]
+    model.RH = rh  # Relative humidity [%]
+    model.Va = vr  # Air velocity [m/s]
+    model.PAR = met  # Physical activity ratio [-]
+    model.simulate(120)  # Exposure time = 60 [min]
+
+
+    # Show the results
+    df = pandas.DataFrame(model.dict_results())  # Make pandas.DataFrame
+    
+    df.TskMean.plot(color = '#1F77B4') # red color in hexadecimal
+    plt.title("Mean Skin Temperature") # add a title
+    plt.xlabel("Time (minutes)")
+    plt.ylabel("Temperature (°C)")
+    plt.legend(["Tsk Mean"]) # add a legend
+    plt.savefig("static\images\plotTskMean.png")
+    plt.clf() # Clear the current figure for the next iteration
+
+    df.Met.plot(color = '#FF7F0E') # red color in hexadecimal
+    plt.title("Total Heat Production of the whole body") # add a title
+    plt.xlabel("Time (minutes)")
+    plt.ylabel("Heat Production (W)")
+    plt.legend(["Met"]) # add a legend
+    plt.savefig("static\images\plotMet.png")
+    plt.clf() # Clear the current figure for the next iteration
+
+    df.TskHead.plot(color = '#2CA02C') # red color in hexadecimal
+    plt.title("Skin temperature Head") # add a title
+    plt.xlabel("Time (minutes)")
+    plt.ylabel("Skin Temperature (°C)")
+    plt.legend(["TskHead"]) # add a legend
+    plt.savefig("static\images\plotHead.png")
+    plt.clf() # Clear the current figure for the next iteration    
+
+    df.TskRHand.plot(color = '#D62728', label = "TskRHand") # red color in hexadecimal
+    plt.legend(["TskRHand"]) # add a legend
+    df.TcrRHand.plot(color = '#2CA02C', label = "TcrRHand")
+    plt.title("Skin temperature Hands") # add a title
+    plt.xlabel("Time (minutes)")
+    plt.ylabel("Skin Temperature (°C)")
+    plt.legend() # add a legend
+    plt.savefig("static\images\plotRHand.png")
+    plt.clf() # Clear the current figure for the next iteration
+
+    df.TskRFoot.plot(color = '#9467BD') # red color in hexadecimal
+    plt.title("Skin temperature Foot") # add a title
+    plt.xlabel("Time (minutes)")
+    plt.ylabel("Skin Temperature (°C)")
+    plt.legend(["TskRFoot"]) # add a legend
+    plt.savefig("static\images\plotRFoot.png")
+    plt.clf() # Clear the current figure for the next iteration
+
+
     
     set_value=set_tmp(tdb, tr, v, rh, met, clo, wme=0, body_surface_area=1.83, p_atm=101325, body_position='standing', units='SI', limit_inputs=True)
     return render_template('index.html', color=color,kWhgain=kWhgain,hdayproxy=hdayproxy, centralheating=centralheating, proximityconso=proximityconso, sh_pmv=sh_pmv, set_value=set_value, pmv_value=pmv_value, tdb=tdb, tr=tr, vr=vr, rh=rh, met=met,clo=clo, a_coefficient=a_coefficient, ct=ct, cs=cs, cr=cr, pt=pt, ps=ps, pd=pd, c20=c20 )
